@@ -67,14 +67,15 @@ async function lineDiff(...args) {
     const arrs = await Promise.all(_.map(args, generateLinesPromise))
     const X = arrs[0], Y = arrs[1]
     const LCS = printLCS(lcs(X, Y), X, Y, X.length - 1, X.length - 1).split('\n')
+    const delSignal = '------ ', addSignal = '++++++ '
     let mStart = 0, nStart = 0, result = []
     for (let i = 0; i < LCS.length; i++) {
         for (let m = mStart; m < X.length; m++) {
             if (X[m] === LCS[i]) {
                 X.slice(mStart, m).map(function (str) {
                     result.push({
-                        'signal': '-',
-                        'str': str
+                        'signal': delSignal,
+                        str
                     })
                 })
                 mStart = m + 1
@@ -86,8 +87,8 @@ async function lineDiff(...args) {
             if (Y[n] === LCS[i]) {
                 Y.slice(nStart, n).map(function (str) {
                     result.push({
-                        'signal': '+',
-                        'str': str
+                        'signal': addSignal,
+                        str
                     })
                 })
                 nStart = n + 1
@@ -102,13 +103,13 @@ async function lineDiff(...args) {
     }
     if (mStart !== X.length) {
         result.push({
-            'signal': '-',
+            'signal': delSignal,
             'str': X.slice(mStart)
         })
     }
     if (nStart !== Y.length) {
         result.push({
-            'signal': '+',
+            'signal': addSignal,
             'str': Y.slice(nStart)
         })
     }
