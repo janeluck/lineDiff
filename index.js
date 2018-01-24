@@ -72,9 +72,10 @@ async function lineDiff(...args) {
     for (let i = 0; i < LCS.length; i++) {
         for (let m = mStart; m < X.length; m++) {
             if (X[m] === LCS[i]) {
-                X.slice(mStart, m).map(function (str) {
+                X.slice(mStart, m).map(function (str, index) {
                     result.push({
                         'signal': delSignal,
+                        'lineNumber': (mStart + index) + '',
                         str
                     })
                 })
@@ -85,9 +86,10 @@ async function lineDiff(...args) {
 
         for (let n = nStart; n < Y.length; n++) {
             if (Y[n] === LCS[i]) {
-                Y.slice(nStart, n).map(function (str) {
+                Y.slice(nStart, n).map(function (str, index) {
                     result.push({
                         'signal': addSignal,
+                        'lineNumber': '' + (nStart + index),
                         str
                     })
                 })
@@ -97,30 +99,41 @@ async function lineDiff(...args) {
         }
         result.push({
             'signal': '',
+            'lineNumber': (mStart - 1) + ' ' + (nStart - 1) + ' ',
             'str': LCS[i]
         })
 
     }
     if (mStart !== X.length) {
-        result.push({
-            'signal': delSignal,
-            'str': X.slice(mStart)
+
+        X.slice(mStart).map(function (str, index) {
+
+            result.push({
+                'signal': delSignal,
+                'lineNumber': (mStart + index) + '',
+                str
+            })
         })
+
     }
     if (nStart !== Y.length) {
-        result.push({
-            'signal': addSignal,
-            'str': Y.slice(nStart)
+        Y.slice(nStart).map(function (str, index) {
+            result.push({
+                'signal': addSignal,
+                'lineNumber': (nStart + index) + '',
+                str
+            })
         })
+
     }
     return result.map(function (line) {
         //console.log(line.signal + line.str)
         if (line.signal === delSignal) {
-            console.log(chalk.red(line.signal + line.str))
+            console.log(chalk.red(line.lineNumber + line.signal + line.str))
         } else if (line.signal === addSignal) {
-            console.log(chalk.green(line.signal + line.str))
+            console.log(chalk.green(line.lineNumber + line.signal + line.str))
         } else {
-            console.log(line.signal + line.str)
+            console.log(line.lineNumber + line.signal + line.str)
         }
 
 
