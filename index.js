@@ -2,8 +2,8 @@
 // 以行为单位, 先求得最长公共子序列
 import _ from 'lodash'
 
+const chalk = require('chalk')
 const fs = require("fs")
-
 
 function lcs(X, Y) {
     const xLength = X.length, yLength = Y.length, c = [], b = []
@@ -114,7 +114,16 @@ async function lineDiff(...args) {
         })
     }
     return result.map(function (line) {
-        console.log(line.signal + line.str)
+        //console.log(line.signal + line.str)
+        if (line.signal === delSignal) {
+            console.log(chalk.red(line.signal + line.str))
+        } else if (line.signal === addSignal) {
+            console.log(chalk.green(line.signal + line.str))
+        } else {
+            console.log(line.signal + line.str)
+        }
+
+
     })
 }
 
