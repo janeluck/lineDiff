@@ -1,6 +1,6 @@
 {
   "name": "linediff",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "compare files then display difference",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,10 @@
     "LCS",
     "DynamicProgramming"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janeluck/lineDiff.git"
+  },
   "author": "janeluck",
   "license": "ISC",
   "devDependencies": {
